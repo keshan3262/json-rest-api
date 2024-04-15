@@ -14,7 +14,10 @@ const { withNonExistentFile, withExistentFile } = require('./utils/fs');
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(pinoHttpLogger);
+
+if (process.env.NODE_ENV !== 'testing') {
+  app.use(pinoHttpLogger);
+}
 app.use(cors());
 
 async function setupServer() {
@@ -102,11 +105,9 @@ async function setupServer() {
   app.listen(PORT, () => logger.info(`Server is running on port ${PORT}...`));
 }
 
-(async () => {
-  try {
-    await setupServer();
-  } catch (e) {
-    logger.error(e);
-    process.exit(1);
-  }
-})();
+const setupPromise = setupServer().catch(e => {
+  logger.error(e);
+  process.exit(1);
+});
+
+module.exports = { app, setupPromise };

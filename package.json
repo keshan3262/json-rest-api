@@ -9,7 +9,7 @@
   "scripts": {
     "run:dev": "cross-env NODE_ENV=development nodemon src/index.js",
     "run:prod": "cross-env NODE_ENV=production node src/index.js",
-    "test": "mocha --jobs 1 --exit",
+    "test": "cross-env NODE_ENV=testing mocha --jobs 1 --exit",
     "lint": "eslint --quiet ./src --ext .js",
     "lint:fix": "eslint --quiet ./src --ext .js --fix"
   },
@@ -32,6 +32,7 @@
     "nodemon": "^3.1.0",
     "pino-pretty": "^11.0.0",
     "prettier": "^3.2.5",
-    "rimraf": "^5.0.5"
+    "rimraf": "^5.0.5",
+    "supertest": "^6.3.4"
   }
 }
