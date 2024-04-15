@@ -1,5 +1,11 @@
 const fsAsync = require('fs/promises');
 
+/**
+ * A factory for creating a handler that executes a function if a file from request does not exist. If it does,
+ * it returns a 409 response. If an error occurs, it returns a 500 response.
+ * @param {(req: import('express').Request) => string} pathFn
+ * @param {(req: import('express').Request, res: import('express').Response, next: () => void) => Promise<void>} execFn
+ */
 const withNonExistentFile = (pathFn, execFn) => {
   return async (req, res, next) => {
     try {
@@ -22,6 +28,17 @@ const withNonExistentFile = (pathFn, execFn) => {
   }
 };
 
+/**
+ * A factory for creating a handler that executes a function if a file from request exists. If it does not,
+ * it returns a 404 response. If an error occurs, it returns a 500 response.
+ * @param {(req: import('express').Request) => string} pathFn
+ * @param {(
+ *   req: import('express').Request,
+ *   res: import('express').Response,
+ *   next: () => void, handler: import('fs/promises').FileHandle
+ * ) => Promise<void>} execFn
+ * @param {boolean} isRead Indicates whether the file should be opened for reading or writing
+ */
 const withExistentFile = (pathFn, execFn, isRead) => {
   return async (req, res, next) => {
     try {

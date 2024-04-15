@@ -8,7 +8,7 @@ const clearStorage = async () => {
   await Promise.all(files.map(file => fsAsync.unlink(path.join(storageDir, file))));
 };
 
-const assertStorageFileContent = async (expectedContent, filename) => {
+const expectStorageFileContent = async (expectedContent, filename) => {
   const chai = await import('chai');
   const content = JSON.parse(await fsAsync.readFile(path.join(storageDir, filename), 'utf-8'));
   chai.expect(content).to.deep.equal(expectedContent);
@@ -24,4 +24,4 @@ const writeFile = async (filename, content) => {
   await fsAsync.writeFile(path.join(storageDir, filename), JSON.stringify(content));
 };
 
-module.exports = { clearStorage, assertStorageFileContent, expectFileExistence, writeFile };
+module.exports = { clearStorage, expectStorageFileContent, expectFileExistence, writeFile };

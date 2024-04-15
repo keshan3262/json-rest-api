@@ -2,6 +2,11 @@ const { param, validationResult } = require('express-validator');
 
 const defaultBodyFn = errors => ({ error: Object.values(errors)[0].msg });
 
+/**
+ * A function that creates a validation result handler middleware.
+ * @param {(errors: Record<string, import('express-validator').ValidationError>) => number} statusCodeFn 
+ * @param {(errors: Record<string, import('express-validator').ValidationError>) => any} bodyFn
+ */
 const validationResultHandlerFactory =
   (statusCodeFn = _errors => 422, bodyFn = defaultBodyFn) =>
   (req, res, next) => {

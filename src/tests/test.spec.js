@@ -1,7 +1,7 @@
 const request = require('supertest');
 
 const { app, setupPromise } = require('../index');
-const { clearStorage, assertStorageFileContent, expectFileExistence, writeFile } = require('../utils/test');
+const { clearStorage, expectStorageFileContent, expectFileExistence, writeFile } = require('../utils/test');
 
 describe('API tests', () => {
   before(async () => {
@@ -16,7 +16,7 @@ describe('API tests', () => {
         .expect(201)
         .expect({ message: 'File created' });
 
-      await assertStorageFileContent({ test: 'test' }, 'test1.json');
+      await expectStorageFileContent({ test: 'test' }, 'test1.json');
     });
 
     it('should return 400 if filename is invalid', async () => {
@@ -38,7 +38,7 @@ describe('API tests', () => {
         .send({ test: 'newTest' })
         .expect(409);
 
-      await assertStorageFileContent({ test: 'test' }, 'test2.json');
+      await expectStorageFileContent({ test: 'test' }, 'test2.json');
     });
   });
 
@@ -96,7 +96,7 @@ describe('API tests', () => {
         .expect(200)
         .expect({ message: 'File updated' });
 
-      await assertStorageFileContent({ test: 'newTest' }, 'test7.json');
+      await expectStorageFileContent({ test: 'newTest' }, 'test7.json');
     });
 
     it('should return 404 if file does not exist', async () => {
